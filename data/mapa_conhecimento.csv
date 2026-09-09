@@ -1,0 +1,80 @@
+sintoma_1,sintoma_2,doenca_associada
+dor no peito,aperto no peito,Infarto agudo do miocardio
+dor forte no peito,suor frio,Infarto agudo do miocardio
+dor no peito,irradia para o braco esquerdo,Infarto agudo do miocardio
+dor no peito,dor no braco esquerdo,Infarto agudo do miocardio
+dor no peito,mandibula,Infarto agudo do miocardio
+aperto no peito,suor frio,Infarto agudo do miocardio
+dor no peito,enjoo,Infarto agudo do miocardio
+dor no peito,nausea,Infarto agudo do miocardio
+suor frio,palidez,Infarto agudo do miocardio
+dor forte no peito,nao passou,Infarto agudo do miocardio
+dor no peito,sensacao de morte,Infarto agudo do miocardio
+aperto no torax,queimacao no peito,Infarto agudo do miocardio
+dor no peito,piora quando faco esforco,Angina
+aperto no peito,esforco fisico,Angina
+dor no peito,melhora quando eu paro,Angina
+aperto no peito,melhora com o repouso,Angina
+dor no peito,subir escada,Angina
+aperto no peito,subir um lance de escada,Angina
+peso no peito,caminhada,Angina
+dor no peito,passa em poucos minutos,Angina
+aperto no peito,quando fico nervoso,Angina
+dor no peito,frio na rua,Angina
+cansaco constante,fadiga,Insuficiencia cardiaca
+cansaco constante,pernas inchadas,Insuficiencia cardiaca
+pernas inchadas,inchaco nos pes,Insuficiencia cardiaca
+falta de ar deitado,dois travesseiros,Insuficiencia cardiaca
+falta de ar,pernas inchadas,Insuficiencia cardiaca
+acordo sufocado,precisando sentar,Insuficiencia cardiaca
+tosse seca a noite,falta de ar,Insuficiencia cardiaca
+ganhei tres quilos,barriga inchada,Insuficiencia cardiaca
+ganho de peso rapido,inchaco,Insuficiencia cardiaca
+cansaco,mesmo depois de descansar,Insuficiencia cardiaca
+falta de ar,esforco pequeno,Insuficiencia cardiaca
+sapato marcar,inchaco no fim do dia,Insuficiencia cardiaca
+coracao disparado,batendo descompassado,Arritmia cardiaca
+coracao acelerado,palpitacao,Arritmia cardiaca
+palpitacao,tontura,Arritmia cardiaca
+coracao disparado,como se falhasse uma batida,Arritmia cardiaca
+batimento irregular,coracao acelerado,Arritmia cardiaca
+coracao disparado,mesmo parado,Arritmia cardiaca
+palpitacao,falta de ar,Arritmia cardiaca
+coracao descompassado,tontura,Arritmia cardiaca
+sinto o coracao na garganta,batedeira,Arritmia cardiaca
+braco dormente,fraqueza de um lado,AVC
+fala embolada,boca torta,AVC
+dormencia no rosto,fala embolada,AVC
+fraqueza subita,perda de forca no braco,AVC
+boca torta,visao dupla,AVC
+fala embolada,confusao para falar,AVC
+braco dormente,de repente,AVC
+perda de equilibrio,dormencia,AVC
+dor de cabeca na nuca,pressao alta,Hipertensao arterial
+dor de cabeca latejante,pressao alta,Hipertensao arterial
+pressao alta,tontura,Hipertensao arterial
+dor de cabeca,quando estou tenso,Hipertensao arterial
+zumbido no ouvido,dor de cabeca,Hipertensao arterial
+sangramento pelo nariz,dor de cabeca,Hipertensao arterial
+visao embacada,pressao alta,Hipertensao arterial
+dor no peito,piora quando eu respiro fundo,Pericardite
+dor no peito,melhora quando eu me inclino para frente,Pericardite
+dor no peito,depois de uma gripe,Pericardite
+dor no peito,piora deitado de costas,Pericardite
+dor no peito,febre,Pericardite
+dor que piora ao respirar,dor nas costas ao deitar,Pericardite
+desmaio,escurecimento da vista,Estenose aortica
+tontura ao levantar,escurecimento da vista,Estenose aortica
+desmaio,esforco fisico,Estenose aortica
+cansaco para caminhar,desmaio,Estenose aortica
+aperto no peito,desmaio,Estenose aortica
+tontura,cansaco para caminhar,Estenose aortica
+sopro no coracao,cansaco,Estenose aortica
+ficou dormente,fala embolou,AVC
+braco dormente,fala embolou,AVC
+fraco de repente,ficou dormente,AVC
+boca torta,fala embolou,AVC
+fala embolou,dificuldade para falar,AVC
+desmaiar,escurecimento da vista,Estenose aortica
+desmaiar,cansaco para caminhar,Estenose aortica
+desmaiar,ao levantar rapido,Estenose aortica
