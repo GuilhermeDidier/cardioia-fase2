@@ -8,8 +8,9 @@ perguntas diferentes a partir do texto que o paciente escreve:
 | **1 — Extração de sintomas** | *Qual doença esses sintomas sugerem?* | Mapa de conhecimento + regras, com evidência explícita |
 | **2 — Classificador de risco** | *Com que urgência atender?* | TF-IDF + Regressão Logística (Scikit-learn) |
 
-Continuação da [Fase 1](https://github.com/GuilhermeDidier/cardioia-fase1), que levantou
-e auditou a base de dados cardiológicos.
+O vocabulário clínico e os quadros usados aqui seguem o
+[UCI Heart Disease Data Set](https://archive.ics.uci.edu/dataset/45/heart+disease)
+(Detrano et al., 1989), a base pública de referência para triagem de doença coronariana.
 
 📹 **Vídeo de demonstração (4 min):** `<INSERIR LINK DO YOUTUBE — não listado>`
 
@@ -132,9 +133,10 @@ sistema; quem otimizasse pela acurácia teria descartado a melhoria certa.
 | Base autoral | As 70 frases foram escritas e rotuladas pela mesma equipe | O modelo aprende o nosso jeito de escrever, não o do paciente |
 | Ausência de negação no treino | Nenhuma frase original diz "não sinto" | Consulta de rotina vira urgência |
 
-Na Fase 1 documentamos que a prevalência de doença varia de **36% a 93%** entre as quatro
-coortes do dataset original. O paralelo é direto: **quem escreve os dados decide o que o
-modelo enxerga** — e isso não se corrige trocando de algoritmo.
+O paralelo com dados clínicos reais é direto: no UCI Heart Disease, a prevalência de
+doença varia de **36% a 93%** entre as quatro coortes hospitalares que compõem a base —
+um modelo treinado em uma delas erra sistematicamente nas outras. **Quem escreve os dados
+decide o que o modelo enxerga**, e isso não se corrige trocando de algoritmo.
 
 ---
 
