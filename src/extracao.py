@@ -9,6 +9,7 @@ linha e uma *regra*: duas expressoes que, juntas, apontam para uma doenca.
 Uso:
     python src/extracao.py
     python src/extracao.py --relato "sinto dor no peito quando subo escada"
+    python src/extracao.py --desafio
 """
 
 from __future__ import annotations
@@ -24,11 +25,24 @@ import pandas as pd
 RAIZ = Path(__file__).resolve().parent.parent
 RELATOS = RAIZ / "data" / "relatos_pacientes.txt"
 MAPA = RAIZ / "data" / "mapa_conhecimento.csv"
+DESAFIO = RAIZ / "data" / "relatos_desafio.csv"
+SEM_HIPOTESE = "(sem hipótese)"
 
 # Palavras que invalidam um sintoma encontrado logo depois delas.
 # "nao sinto dor no peito" nao pode contar como dor no peito.
 NEGACOES = ("nao", "sem", "nunca", "nego", "nenhum", "nenhuma")
 JANELA_NEGACAO = 3  # em palavras
+
+# "nem" so nega quando continua uma negacao anterior: "nao sinto dor no peito
+# NEM falta de ar". Sozinho ele costuma ser enfase e AFIRMA o sintoma:
+# "estou tao cansado que nem consigo subir um lance de escada".
+NEM = "nem"
+JANELA_NEM = 8  # palavras antes do "nem" onde procurar a negacao que ele continua
+
+# Uma regra do mapa e um *par* de expressoes. Sem nenhum par completo, o que
+# sobra sao expressoes soltas ("dor no peito") que aparecem em varias doencas,
+# e a escolha entre elas seria decidida pelo desempate -- ou seja, por nada.
+MIN_REGRAS_COMPLETAS = 1
 
 
 def normalizar(texto: str) -> str:
@@ -58,8 +72,15 @@ def carregar_mapa(caminho: Path = MAPA) -> pd.DataFrame:
 
 def _negado(texto_norm: str, inicio: int) -> bool:
     """True se houver negacao nas palavras imediatamente antes da expressao."""
-    anteriores = texto_norm[:inicio].split()[-JANELA_NEGACAO:]
-    return any(p in NEGACOES for p in anteriores)
+    palavras = texto_norm[:inicio].split()
+    janela = palavras[-JANELA_NEGACAO:]
+    if any(p in NEGACOES for p in janela):
+        return True
+    if NEM in janela:
+        pos_nem = len(palavras) - len(janela) + janela.index(NEM)
+        antes_do_nem = palavras[max(0, pos_nem - JANELA_NEM):pos_nem]
+        return any(p in NEGACOES for p in antes_do_nem)
+    return False
 
 
 def encontrar_expressoes(texto: str, expressoes: set[str]) -> set[str]:
@@ -117,33 +138,75 @@ def pontuar(texto: str, mapa: pd.DataFrame) -> list[Hipotese]:
     return sorted(hipoteses, key=lambda h: (-h.pontuacao, h.doenca))
 
 
+def _decidir(ranking: list[Hipotese]) -> Hipotese | None:
+    """A mais bem pontuada entre as doencas com evidencia suficiente.
+
+    So concorre quem tem ao menos MIN_REGRAS_COMPLETAS regra(s) inteira(s):
+    uma doenca com varias expressoes soltas nao passa na frente de outra que
+    tem um par completo do mapa.
+    """
+    elegiveis = [h for h in ranking if h.regras_completas >= MIN_REGRAS_COMPLETAS]
+    return elegiveis[0] if elegiveis else None
+
+
+def _sintomas(ranking: list[Hipotese]) -> list[str]:
+    """Todas as expressoes reconhecidas no relato, de qualquer doenca."""
+    return sorted(set().union(*(h.sintomas for h in ranking)))
+
+
 def sugerir_diagnostico(texto: str, mapa: pd.DataFrame) -> Hipotese | None:
-    """A hipotese mais bem pontuada, ou None se nenhum sintoma foi reconhecido."""
-    ranking = pontuar(texto, mapa)
-    return ranking[0] if ranking else None
+    """A hipotese sugerida, ou None se a evidencia nao basta (ver _decidir)."""
+    return _decidir(pontuar(texto, mapa))
 
 
 def relatorio(texto: str, mapa: pd.DataFrame, alternativas: int = 2) -> str:
     """Texto formatado com sintomas extraidos, hipotese principal e alternativas."""
     ranking = pontuar(texto, mapa)
     if not ranking:
-        return "  Sintomas extraidos: (nenhum reconhecido)\n  -> Sem hipotese: relato fora do mapa de conhecimento."
+        return "  Sintomas extraídos: (nenhum reconhecido)\n  -> Sem hipótese: relato fora do mapa de conhecimento."
 
-    principal = ranking[0]
+    principal = _decidir(ranking)
+    todos = _sintomas(ranking)
+    if principal is None:
+        return (
+            f"  Sintomas extraídos: {', '.join(todos)}\n"
+            "  -> Sem hipótese: evidência insuficiente (nenhuma regra do mapa disparou inteira).\n"
+            "     Candidatas: " + "; ".join(f"{h.doenca} ({h.pontuacao:g})" for h in ranking[:3])
+        )
     linhas = [
-        f"  Sintomas extraidos: {', '.join(principal.sintomas)}",
-        f"  -> Hipotese: {principal.doenca} "
-        f"(pontuacao {principal.pontuacao:g}, {principal.regras_completas} regra(s) completa(s))",
+        f"  Sintomas extraídos: {', '.join(todos)}",
+        f"  -> Hipótese: {principal.doenca} "
+        f"(pontuação {principal.pontuacao:g}, {principal.regras_completas} regra(s) completa(s))",
     ]
-    outras = ranking[1 : 1 + alternativas]
+    outras = [h for h in ranking if h is not principal][:alternativas]
     if outras:
         linhas.append(
             "     Alternativas: "
             + "; ".join(f"{h.doenca} ({h.pontuacao:g})" for h in outras)
         )
-    if len(ranking) > 1 and ranking[1].pontuacao == principal.pontuacao:
-        linhas.append("     ATENCAO: empate na pontuacao -- caso ambiguo, exige avaliacao humana.")
+    if any(h.pontuacao == principal.pontuacao for h in outras):
+        linhas.append("     ATENÇÃO: empate na pontuação -- caso ambíguo, exige avaliação humana.")
     return "\n".join(linhas)
+
+
+def testar_desafio(mapa: pd.DataFrame, caminho: Path = DESAFIO) -> pd.DataFrame:
+    """Roda o extrator nos relatos-desafio (escritos com o mapa congelado)."""
+    desafio = pd.read_csv(caminho)
+    linhas = []
+    for _, d in desafio.iterrows():
+        ranking = pontuar(d["relato"], mapa)
+        h = _decidir(ranking)
+        sugerido = h.doenca if h else SEM_HIPOTESE
+        linhas.append({
+            "relato": d["relato"],
+            "esperado": d["esperado"],
+            "sugerido": sugerido,
+            "sintomas": ", ".join(_sintomas(ranking)),
+            # compara normalizado: acento ou forma Unicode diferente nao e erro
+            "acertou": normalizar(sugerido) == normalizar(d["esperado"]),
+            "o_que_testa": d["o_que_testa"],
+        })
+    return pd.DataFrame(linhas)
 
 
 def main() -> None:
@@ -151,13 +214,20 @@ def main() -> None:
     ap.add_argument("--relato", help="analisa uma frase avulsa em vez do arquivo")
     ap.add_argument("--relatos", type=Path, default=RELATOS)
     ap.add_argument("--mapa", type=Path, default=MAPA)
+    ap.add_argument("--desafio", action="store_true",
+                    help="roda os relatos-desafio, escritos sem alterar o mapa")
     args = ap.parse_args()
 
     mapa = carregar_mapa(args.mapa)
+    if args.desafio:
+        r = testar_desafio(mapa)
+        print(r[["esperado", "sugerido", "acertou", "sintomas"]].to_string(index=False))
+        print(f"\nAcertos no desafio: {r.acertou.sum()}/{len(r)}")
+        return
     textos = [args.relato] if args.relato else carregar_relatos(args.relatos)
 
     print(f"Mapa de conhecimento: {len(mapa)} regras, "
-          f"{mapa.doenca_associada.nunique()} doencas.\n")
+          f"{mapa.doenca_associada.nunique()} doenças.\n")
     for i, texto in enumerate(textos, 1):
         print(f"[Relato {i}] {texto}")
         print(relatorio(texto, mapa))

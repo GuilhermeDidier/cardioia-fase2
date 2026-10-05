@@ -1,0 +1,11 @@
+relato,esperado,o_que_testa
+"Toda vez que caminho mais rápido para pegar o ônibus sinto um peso no peito, que some depois de uns minutos parado; isso começou há umas três semanas.",Angina,"angina descrita com outras palavras ('peso', 'some parado')"
+"Há uma hora estou com uma pressão enorme no meio do peito, suando muito e com vontade de vomitar; a dor desce pelo braço esquerdo.",Infarto agudo do miocárdio,"infarto sem as expressões 'dor no peito' e 'suor frio'"
+"Faz um mês que fico sem fôlego para fazer qualquer coisa em casa, meus tornozelos incham todo dia e tenho que dormir quase sentado.",Insuficiência cardíaca,"insuficiência cardíaca com sinônimos ('sem fôlego', 'tornozelos incham')"
+"Desde a semana passada sinto umas batedeiras no peito do nada, o coração parece que vai sair pela boca, e fico tonto quando acontece.",Arritmia cardíaca,"arritmia em linguagem coloquial"
+"Minha mãe acordou hoje com o lado esquerdo do rosto caído, sem conseguir falar direito e com a mão esquerda sem força.",AVC,"AVC relatado por terceiro, com 'sem' que não é negação de sintoma"
+"Há meses acordo com a cabeça pesada e latejando, e quando medi no posto a pressão estava 17 por 11.",Hipertensão arterial,"hipertensão sem a expressão 'pressão alta'"
+"Depois de uma virose apareceu uma dor aguda no peito que fica pior quando puxo o ar e alivia quando sento inclinado para frente; estou com febre baixa.",Pericardite,"pericardite com o quadro clássico em outras palavras"
+"Nas últimas semanas quase desmaiei duas vezes subindo a ladeira de casa e fico sem ar com pouco esforço; o médico já tinha falado de um sopro.",Estenose aórtica,"estenose com 'quase desmaiei' e 'sopro' soltos"
+"Depois de uma viagem longa de ônibus minha panturrilha ficou inchada e dolorida, e hoje começou uma falta de ar súbita com dor ao respirar.",(sem hipótese),"embolia pulmonar: doença fora do mapa deve sair sem hipótese"
+"Não sinto dor no peito nem falta de ar; vim só fazer o check-up anual porque meu pai teve infarto.",(sem hipótese),"negação: nenhum sintoma presente"

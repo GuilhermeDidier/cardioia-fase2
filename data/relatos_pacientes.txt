@@ -1,16 +1,16 @@
 # CardioIA - Fase 2 | Parte 1
 # 10 relatos de sintomas simulados, no formato em que um paciente descreveria
-# a queixa numa triagem: o que sente, quando comecou e como afeta a rotina.
-# Sao textos ficticios, escritos por nos. Nenhum e transcricao de paciente real.
-# Uma linha = um relato. Linhas iniciadas por # sao comentario.
+# a queixa numa triagem: o que sente, quando começou e como afeta a rotina.
+# São textos fictícios, escritos por nós. Nenhum é transcrição de paciente real.
+# Uma linha = um relato. Linhas iniciadas por # são comentário.
 
-Ha dois dias estou com uma dor no peito que aperta e piora quando faco esforco fisico; ontem tive que parar no meio da subida para casa e a dor so passou depois de uns dez minutos sentado.
-Sinto um cansaco constante ha uma semana, mesmo depois de descansar, e minhas pernas estao inchadas no fim do dia a ponto de o sapato marcar; para dormir preciso de dois travesseiros senao me falta o ar deitado.
-Desde ontem a noite sinto o coracao disparado e batendo descompassado, como se falhasse uma batida, junto com uma tontura que me obriga a sentar; ja aconteceu tres vezes hoje enquanto eu estava parado.
-Tenho falta de ar para subir um lance de escada que eu subia sem problema ate o mes passado, e as vezes vem junto um aperto no peito que melhora quando eu paro de andar.
-Acordei hoje as cinco da manha com uma dor forte no peito que irradia para o braco esquerdo e para a mandibula, com suor frio e enjoo; nao passou com o remedio de estomago e ja faz mais de trinta minutos.
-Ha tres meses sinto dor de cabeca latejante na nuca quase toda manha, principalmente quando estou tenso, e o aparelho da farmacia marcou pressao alta nas ultimas quatro vezes que medi.
-Ontem de manha meu braco direito ficou dormente e fraco de repente e minha fala embolou por uns vinte minutos; a boca ficou torta de um lado e eu nao conseguia segurar a caneca direito.
-Sinto uma dor no peito que piora quando eu respiro fundo ou deito de costas e melhora quando eu me inclino para frente; comecou depois de uma gripe forte, ha uns cinco dias.
-Ha um mes tenho tido tontura e escurecimento da vista quando levanto rapido, e na semana passada cheguei a desmaiar na fila do mercado; o cansaco para caminhar tambem aumentou muito.
-Tenho tosse seca a noite ha duas semanas e acordo sufocado precisando sentar na beira da cama para respirar; ganhei tres quilos nesse periodo sem mudar a alimentacao e a barriga esta inchada.
+Há dois dias estou com uma dor no peito que aperta e piora quando faço esforço físico; ontem tive que parar no meio da subida para casa e a dor só passou depois de uns dez minutos sentado.
+Sinto um cansaço constante há uma semana, mesmo depois de descansar, e minhas pernas estão inchadas no fim do dia a ponto de o sapato marcar; para dormir preciso de dois travesseiros, senão me falta o ar deitado.
+Desde ontem à noite sinto o coração disparado e batendo descompassado, como se falhasse uma batida, junto com uma tontura que me obriga a sentar; já aconteceu três vezes hoje enquanto eu estava parado.
+Tenho falta de ar para subir um lance de escada que eu subia sem problema até o mês passado, e às vezes vem junto um aperto no peito que melhora quando eu paro de andar.
+Acordei hoje às cinco da manhã com uma dor forte no peito que irradia para o braço esquerdo e para a mandíbula, com suor frio e enjoo; não passou com o remédio de estômago e já faz mais de trinta minutos.
+Há três meses sinto dor de cabeça latejante na nuca quase toda manhã, principalmente quando estou tenso, e o aparelho da farmácia marcou pressão alta nas últimas quatro vezes que medi.
+Ontem de manhã meu braço direito ficou dormente e fraco de repente e minha fala embolou por uns vinte minutos; a boca ficou torta de um lado e eu não conseguia segurar a caneca direito.
+Sinto uma dor no peito que piora quando eu respiro fundo ou deito de costas e melhora quando eu me inclino para frente; começou depois de uma gripe forte, há uns cinco dias.
+Há um mês tenho tido tontura e escurecimento da vista quando levanto rápido, e na semana passada cheguei a desmaiar na fila do mercado; o cansaço para caminhar também aumentou muito.
+Tenho tosse seca à noite há duas semanas e acordo sufocado precisando sentar na beira da cama para respirar; ganhei três quilos nesse período sem mudar a alimentação e a barriga está inchada.

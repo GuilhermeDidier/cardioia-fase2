@@ -7,7 +7,7 @@ roda validacao cruzada, compara com uma linha de base burra e submete o modelo
 a um conjunto-desafio de frases dificeis.
 
 Uso:
-    python src/classificador.py
+    python -m src.classificador
 """
 
 from __future__ import annotations
@@ -19,7 +19,12 @@ from sklearn.dummy import DummyClassifier
 from sklearn.feature_extraction.text import TfidfVectorizer
 from sklearn.linear_model import LogisticRegression
 from sklearn.metrics import classification_report, confusion_matrix
-from sklearn.model_selection import StratifiedKFold, cross_val_score, train_test_split
+from sklearn.model_selection import (
+    StratifiedKFold,
+    cross_val_predict,
+    cross_val_score,
+    train_test_split,
+)
 from sklearn.pipeline import Pipeline
 from sklearn.tree import DecisionTreeClassifier
 
@@ -92,6 +97,37 @@ def avaliar(modelo: str = "logistica", base: pd.DataFrame | None = None) -> dict
     }
 
 
+def curva_limiar(
+    base: pd.DataFrame | None = None, limiares: tuple[float, ...] = (0.5, 0.45, 0.4, 0.35)
+) -> pd.DataFrame:
+    """Recall de alto risco x falsos positivos para cada limiar de decisao.
+
+    As probabilidades vem da validacao cruzada (out-of-fold): cada frase e
+    pontuada por um modelo que nao a viu no treino. Escolher o limiar olhando
+    o proprio teste de 21 frases seria ajustar o corte ao acaso daquele sorteio.
+    """
+    base = carregar_base() if base is None else base
+    pipe = construir_pipeline("logistica")
+    cv = StratifiedKFold(5, shuffle=True, random_state=SEMENTE)
+    proba = cross_val_predict(pipe, base["frase_norm"], base["situacao"], cv=cv,
+                              method="predict_proba")
+    classes = sorted(base["situacao"].unique())  # ordem de classes_ no sklearn
+    p_alto = proba[:, classes.index(POSITIVO)]
+    grave = (base["situacao"] == POSITIVO).to_numpy()
+
+    linhas = []
+    for t in limiares:
+        alerta = p_alto >= t
+        linhas.append({
+            "limiar": t,
+            "recall alto risco": round((alerta & grave).sum() / grave.sum(), 3),
+            "graves perdidos": int((~alerta & grave).sum()),
+            "falsos positivos": int((alerta & ~grave).sum()),
+            "acurácia": round((alerta == grave).mean(), 3),
+        })
+    return pd.DataFrame(linhas)
+
+
 def termos_influentes(pipe: Pipeline, n: int = 10) -> pd.DataFrame:
     """Os termos que mais empurram a decisao para cada lado (so p/ logistica)."""
     vocab = pipe.named_steps["tfidf"].get_feature_names_out()
@@ -115,10 +151,24 @@ def prever(pipe: Pipeline, frases: list[str]) -> pd.DataFrame:
     return pd.DataFrame({"frase": frases, "previsto": pred, f"p({POSITIVO})": prob.round(3)})
 
 
-def testar_desafio(pipe: Pipeline, caminho: Path = DESAFIO) -> pd.DataFrame:
+def aplicar_limiar(pipe: Pipeline, frases: list[str], limiar: float) -> list[str]:
+    """Classifica com corte proprio: alto risco se p(alto risco) >= limiar.
+
+    Usa a probabilidade crua (a de `prever` e arredondada para exibicao), o
+    mesmo criterio de `curva_limiar`.
+    """
+    classes = list(pipe.named_steps["clf"].classes_)
+    negativo = next(c for c in classes if c != POSITIVO)
+    prob = pipe.predict_proba([normalizar(f) for f in frases])[:, classes.index(POSITIVO)]
+    return [POSITIVO if p >= limiar else negativo for p in prob]
+
+
+def testar_desafio(pipe: Pipeline, caminho: Path = DESAFIO, limiar: float = 0.5) -> pd.DataFrame:
     """Roda o modelo no conjunto-desafio e marca os acertos."""
     desafio = pd.read_csv(caminho)
     saida = prever(pipe, desafio["frase"].tolist())
+    if limiar != 0.5:
+        saida["previsto"] = aplicar_limiar(pipe, desafio["frase"].tolist(), limiar)
     saida["esperado"] = desafio["situacao"]
     saida["acertou"] = saida["previsto"] == saida["esperado"]
     saida["o_que_testa"] = desafio["o_que_testa"]
@@ -146,6 +196,9 @@ def main() -> None:
     desafio = testar_desafio(pipe)
     print(f"Conjunto-desafio: {desafio.acertou.sum()}/{len(desafio)} acertos")
     print(desafio[["frase", "esperado", "previsto", "p(alto risco)", "acertou"]].to_string(index=False))
+
+    print("\nLimiar de decisao (probabilidades da validacao cruzada, 70 frases):")
+    print(curva_limiar(base).to_string(index=False))
 
 
 if __name__ == "__main__":
