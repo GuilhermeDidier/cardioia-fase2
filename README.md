@@ -14,7 +14,7 @@ O vocabulário clínico e os quadros usados aqui seguem o
 [Fase 1](https://github.com/davisjr2000/cardio-ia). Na análise de vieses, cruzamos o
 classificador com os 303 pacientes daquela fase.
 
-📹 **Vídeo de demonstração (4 min):** `<INSERIR LINK DO YOUTUBE — não listado>`
+📹 **Vídeo de demonstração (4 min):** `https://www.youtube.com/watch?v=cQGfFUmYGV0`
 
 ---
 
